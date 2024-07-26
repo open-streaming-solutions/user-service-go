@@ -3,6 +3,8 @@
 #
 # Binaries for programs and plugins
 .idea
+.run
+env
 *.exe
 *.exe~
 *.dll

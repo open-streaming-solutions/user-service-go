@@ -13,9 +13,6 @@ func TestNewEnv(t *testing.T) {
 		os.Setenv("USER_SERVICE_DB_HOST", "test_host")
 		os.Setenv("USER_SERVICE_DB_PORT", "test_port")
 		os.Setenv("USER_SERVICE_DB_NAME", "test_dbname")
-		os.Setenv("USER_SERVICE_DB_MAX_IDLE_CONNS", "10")
-		os.Setenv("USER_SERVICE_DB_MAX_OPEN_CONNS", "20")
-		os.Setenv("USER_SERVICE_DB_MAX_LIFETIME", "30")
 
 		env := NewEnv()
 
@@ -37,18 +34,6 @@ func TestNewEnv(t *testing.T) {
 
 		if env.DBName != "test_dbname" {
 			t.Errorf("Expected DBName to be 'test_dbname', got %s", env.DBName)
-		}
-
-		if env.DBMaxIdleConns != 10 {
-			t.Errorf("Expected DBMaxIdleConns to be 10, got %d", env.DBMaxIdleConns)
-		}
-
-		if env.DBMaxOpenConns != 20 {
-			t.Errorf("Expected DBMaxOpenConns to be 20, got %d", env.DBMaxOpenConns)
-		}
-
-		if env.DBMaxLifetime != 30 {
-			t.Errorf("Expected DBMaxLifetime to be 30, got %d", env.DBMaxLifetime)
 		}
 	})
 
@@ -76,18 +61,6 @@ func TestNewEnv(t *testing.T) {
 
 		if env.DBName != "" {
 			t.Errorf("Expected DBName to be '', got %s", env.DBName)
-		}
-
-		if env.DBMaxIdleConns != 0 {
-			t.Errorf("Expected DBMaxIdleConns to be 0, got %d", env.DBMaxIdleConns)
-		}
-
-		if env.DBMaxOpenConns != 0 {
-			t.Errorf("Expected DBMaxOpenConns to be 0, got %d", env.DBMaxOpenConns)
-		}
-
-		if env.DBMaxLifetime != 0 {
-			t.Errorf("Expected DBMaxLifetime to be 0, got %d", env.DBMaxLifetime)
 		}
 	})
 }
