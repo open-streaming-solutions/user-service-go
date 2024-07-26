@@ -19,11 +19,11 @@ type GrpcServer struct {
 	env    config.Env
 }
 
-func NewGrpcServer(logger logging.Logger, env config.Env, lc fx.Lifecycle) *GrpcServer {
+func NewGrpcServer(lx fx.Lifecycle, logger logging.Logger, env config.Env, handle *handler.GrpcHandler) *GrpcServer {
 	server := grpc.NewServer()
-	handler.RegisterGrpcHandler(server)
+	handler.RegisterGrpcHandler(server, handle)
 
-	lc.Append(fx.Hook{
+	lx.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			listen, err := net.Listen("tcp", env.Port)
 			if err != nil {
@@ -52,3 +52,7 @@ func NewGrpcServer(logger logging.Logger, env config.Env, lc fx.Lifecycle) *Grpc
 		server: server,
 	}
 }
+
+/*
+
+ */

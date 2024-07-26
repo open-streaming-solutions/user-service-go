@@ -12,12 +12,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-var Module = fx.Provide(NewGrpcHandler)
-
-type IGrpcHandler interface {
-	GetUser(ctx context.Context, req *usergen.GetUserRequest) (*usergen.GetUserResponse, error)
-	CreateUser(ctx context.Context, req *usergen.CreateUserRequest) (*emptypb.Empty, error)
-}
+var Module = fx.Module("GrpcHandler",
+	fx.Provide(NewGrpcHandler),
+)
 
 type GrpcHandler struct {
 	usergen.UnimplementedUserServiceServer
@@ -25,12 +22,12 @@ type GrpcHandler struct {
 	logger  logging.Logger
 }
 
-func NewGrpcHandler(service service.IUserService) IGrpcHandler {
+func NewGrpcHandler(service service.IUserService) *GrpcHandler {
 	return &GrpcHandler{service: service}
 }
 
-func RegisterGrpcHandler(g *grpc.Server) {
-	usergen.RegisterUserServiceServer(g, &GrpcHandler{})
+func RegisterGrpcHandler(g *grpc.Server, grpcHandler *GrpcHandler) {
+	usergen.RegisterUserServiceServer(g, grpcHandler)
 }
 
 func (h *GrpcHandler) GetUser(ctx context.Context, req *usergen.GetUserRequest) (*usergen.GetUserResponse, error) {
