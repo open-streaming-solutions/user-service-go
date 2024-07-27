@@ -6,6 +6,7 @@
 .run
 .devcontainer
 env
+api/proto
 *.exe
 *.exe~
 *.dll
