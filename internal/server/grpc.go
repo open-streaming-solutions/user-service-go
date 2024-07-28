@@ -1,10 +1,13 @@
-package serve
+package server
 
 import (
 	"context"
 	"github.com/Open-Streaming-Solutions/user-service/internal/config"
-	"github.com/Open-Streaming-Solutions/user-service/internal/controller/handler"
+	"github.com/Open-Streaming-Solutions/user-service/internal/handler"
 	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
+	"github.com/Open-Streaming-Solutions/user-service/internal/middleware"
+	mdlogging "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"log/slog"
@@ -20,12 +23,23 @@ type GrpcServer struct {
 }
 
 func NewGrpcServer(lx fx.Lifecycle, logger logging.Logger, env config.Env, handle *handler.GrpcHandler) *GrpcServer {
-	server := grpc.NewServer()
+	opts := []mdlogging.Option{
+		mdlogging.WithLogOnEvents(mdlogging.StartCall, mdlogging.FinishCall),
+	}
+
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			mdlogging.UnaryServerInterceptor(logging.InterceptorLogger(logger), opts...),
+			recovery.UnaryServerInterceptor(
+				recovery.WithRecoveryHandler(middleware.RecoveryHandlerFunc),
+			),
+		),
+	)
 	handler.RegisterGrpcHandler(server, handle)
 
 	lx.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			listen, err := net.Listen("tcp", env.Port)
+			listen, err := net.Listen("tcp", ":"+env.Port)
 			if err != nil {
 				return err
 			}
@@ -36,7 +50,7 @@ func NewGrpcServer(lx fx.Lifecycle, logger logging.Logger, env config.Env, handl
 				}
 			}()
 
-			logger.Info("grpc server listening on ", slog.String("addr", listen.Addr().String()), slog.String("port", env.Port))
+			logger.Info("grpc server listening on ", slog.String("addr", listen.Addr().String()))
 
 			return nil
 		},
@@ -52,7 +66,3 @@ func NewGrpcServer(lx fx.Lifecycle, logger logging.Logger, env config.Env, handl
 		server: server,
 	}
 }
-
-/*
-
- */

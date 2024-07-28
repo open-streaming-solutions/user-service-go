@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
 	"github.com/Open-Streaming-Solutions/user-service/internal/service"
-	usergen "github.com/Open-Streaming-Solutions/user-service/pkg/proto"
+	protouser "github.com/Open-Streaming-Solutions/user-service/pkg/proto"
 	"github.com/Open-Streaming-Solutions/user-service/pkg/util"
 	"github.com/jackc/pgx/v5/pgtype"
 	"go.uber.org/fx"
@@ -17,7 +17,7 @@ var Module = fx.Module("GrpcHandler",
 )
 
 type GrpcHandler struct {
-	usergen.UnimplementedUserServiceServer
+	protouser.UnimplementedUserServiceServer
 	service service.IUserService
 	logger  logging.Logger
 }
@@ -27,20 +27,20 @@ func NewGrpcHandler(service service.IUserService) *GrpcHandler {
 }
 
 func RegisterGrpcHandler(g *grpc.Server, grpcHandler *GrpcHandler) {
-	usergen.RegisterUserServiceServer(g, grpcHandler)
+	protouser.RegisterUserServiceServer(g, grpcHandler)
 }
 
-func (h *GrpcHandler) GetUser(ctx context.Context, req *usergen.GetUserRequest) (*usergen.GetUserResponse, error) {
+func (h *GrpcHandler) GetUser(ctx context.Context, req *protouser.GetUserRequest) (*protouser.GetUserResponse, error) {
 	id, err := h.service.GetUser(ctx, req.GetUsername())
 	if err != nil {
 		h.logger.Error("Failed to get user", "username", req.GetUsername(), "error", err)
 		return nil, err
 	}
 
-	return &usergen.GetUserResponse{UUID: util.ConvertUUIDtoString(id)}, nil
+	return &protouser.GetUserResponse{UUID: util.ConvertUUIDtoString(id)}, nil
 }
 
-func (h *GrpcHandler) CreateUser(ctx context.Context, req *usergen.CreateUserRequest) (*emptypb.Empty, error) {
+func (h *GrpcHandler) CreateUser(ctx context.Context, req *protouser.CreateUserRequest) (*emptypb.Empty, error) {
 	uuid := &pgtype.UUID{}
 	err := uuid.Scan(req.GetUUID())
 	if err != nil {
