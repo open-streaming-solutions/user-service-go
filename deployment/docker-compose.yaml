@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  api:
+    hostname: user-service
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile
+    user: root
+    env_file: ../env/app.env
+    volumes:
+      - user-service-logs:/user-service/logs
+    ports:
+      - "5555:5555"
+    stdin_open: true
+    tty: true
+    networks:
+      user-service-network:
+        aliases:
+          - user-service-api
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:17beta2-alpine3.20
+    build:
+      context: ../
+    restart: always
+    env_file: ../env/db.env
+    volumes:
+      - ../scripts/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - user-service-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      user-service-network:
+        aliases:
+          - user-service-db
+
+networks:
+  user-service-network:
+    driver: overlay
+    attachable: true
+    external: false
+
+volumes:
+  user-service-logs:
+    external: false
+  user-service-db:
+    external: false

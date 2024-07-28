@@ -1,0 +1,16 @@
+version: 2
+# only for CI/CD or compose
+#servers:
+#  - engine: postgresql
+#    uri: postgres://${USER_SERVICE_DB_USERNAME}:${USER_SERVICE_DB_PASSWORD}@${USER_SERVICE_DB_HOST}:${USER_SERVICE_DB_PORT}/${USER_SERVICE_DB_NAME}
+sql:
+  - engine: "postgresql"
+    queries: "sql/query.sql"
+    schema: "sql/schema.sql"
+#    database:
+#      managed: true
+    gen:
+      go:
+        package: "repository"
+        sql_package: "pgx/v5"
+        out: "internal/repository"
