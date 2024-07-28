@@ -12,6 +12,8 @@ services:
       - user-service-logs:/user-service/logs
     ports:
       - "5555:5555"
+    stdin_open: true
+    tty: true
     networks:
       user-service-network:
         aliases:
