@@ -34,7 +34,7 @@ jobs:
 
       - name: Get repository name in lowercase
         id: repo-name
-        run: echo "REPO=$(echo ${{ github.repository }} | tr [:upper:] [:lower:])" >> $GITHUB_ENV
+        run: REPO=$(echo ${{ github.repository }} | tr [:upper:] [:lower:])
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
@@ -43,8 +43,8 @@ jobs:
           file: ./deployment/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ env.REPO }}:latest
-            ghcr.io/${{ env.REPO }}:${{ github.event.release.tag_name }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
 
       - name: Logout from GitHub Container Registry
         run: docker logout ghcr.io

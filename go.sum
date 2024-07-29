@@ -1,7 +1,5 @@
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
-github.com/Open-Streaming-Solutions/shared v0.1.1 h1:KlW+VjahfaTnvT+txOz1Mf8pTk8+1f6Ymn1A7xV6Or0=
-github.com/Open-Streaming-Solutions/shared v0.1.1/go.mod h1:QQiP27GFOfmI0nx0rt5SCEVRousV/qjs9RFuFr/mk5Q=
 github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5 h1:2utncsgypxYV8XffJ1+p2D52owlnRE8RtjRangFuETQ=
 github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5/go.mod h1:sjlfyEVTGb2MK0AGgieg3V8I8ETtLxHVWD0idzgWf5A=
 github.com/Totus-Floreo/otris v0.1.1 h1:qNjzArSs98uboblnXbHwD/jEnPsxJMzeu/seVvxG41g=
@@ -51,6 +49,8 @@ github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
 github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+github.com/open-streaming-solutions/shared v0.1.2 h1:+V73LB90OJlmTxK3yY9HSzVaG1Jb9tjWZMnqH1VVUc0=
+github.com/open-streaming-solutions/shared v0.1.2/go.mod h1:VR2sqMcNfKbAdQZNZ8wM0E84yGriXQg2f8X/3Clpt/8=
 github.com/pelletier/go-toml/v2 v2.2.2 h1:aYUidT7k73Pcl9nb2gScu7NSrKCSHIDE89b3+6Wq+LM=
 github.com/pelletier/go-toml/v2 v2.2.2/go.mod h1:1t835xjRzz80PqgE6HHgN2JOsmgYu/h4qDAS4n929Rs=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
