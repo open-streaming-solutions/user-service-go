@@ -52,7 +52,7 @@ func (s *UserService) CreateUser(ctx context.Context, id string, username, email
 
 	_, err = s.db.CreateUser(ctx, repository.CreateUserParams{
 		ID:       *uuid,
-		Nickname: username,
+		Username: username,
 		Email:    address.String(),
 	})
 	if err != nil {

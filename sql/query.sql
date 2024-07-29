@@ -1,14 +1,14 @@
 -- name: GetUser :one
 SELECT * FROM users
-WHERE nickname = $1 LIMIT 1;
+WHERE username = $1 LIMIT 1;
 
 -- name: ListUsers :many
 SELECT * FROM users
-ORDER BY nickname;
+ORDER BY username;
 
 -- name: CreateUser :one
 INSERT INTO users (
-    id, nickname, email
+    id, username, email
 ) VALUES (
              $1, $2, $3
          )

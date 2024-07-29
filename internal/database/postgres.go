@@ -55,8 +55,7 @@ func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) reposit
 	}
 
 	if err := DoMigration(logger, dbURL, devDbURL); err != nil {
-		//logger.Error("Unable to perform database migration", slog.String("error", err.Error()))
-		//os.Exit(1)
+		logger.Error("Unable to perform database migration", slog.String("error", err.Error()))
 	}
 
 	lx.Append(fx.Hook{
