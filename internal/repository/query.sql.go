@@ -13,23 +13,23 @@ import (
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
-    id, nickname, email
+    id, username, email
 ) VALUES (
              $1, $2, $3
          )
-RETURNING id, nickname, email
+RETURNING id, username, email
 `
 
 type CreateUserParams struct {
 	ID       pgtype.UUID
-	Nickname string
+	Username string
 	Email    string
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRow(ctx, createUser, arg.ID, arg.Nickname, arg.Email)
+	row := q.db.QueryRow(ctx, createUser, arg.ID, arg.Username, arg.Email)
 	var i User
-	err := row.Scan(&i.ID, &i.Nickname, &i.Email)
+	err := row.Scan(&i.ID, &i.Username, &i.Email)
 	return i, err
 }
 
@@ -44,20 +44,20 @@ func (q *Queries) DeleteUser(ctx context.Context, id pgtype.UUID) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, nickname, email FROM users
-WHERE nickname = $1 LIMIT 1
+SELECT id, username, email FROM users
+WHERE username = $1 LIMIT 1
 `
 
-func (q *Queries) GetUser(ctx context.Context, nickname string) (User, error) {
-	row := q.db.QueryRow(ctx, getUser, nickname)
+func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
+	row := q.db.QueryRow(ctx, getUser, username)
 	var i User
-	err := row.Scan(&i.ID, &i.Nickname, &i.Email)
+	err := row.Scan(&i.ID, &i.Username, &i.Email)
 	return i, err
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, nickname, email FROM users
-ORDER BY nickname
+SELECT id, username, email FROM users
+ORDER BY username
 `
 
 func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
@@ -69,7 +69,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 	var items []User
 	for rows.Next() {
 		var i User
-		if err := rows.Scan(&i.ID, &i.Nickname, &i.Email); err != nil {
+		if err := rows.Scan(&i.ID, &i.Username, &i.Email); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

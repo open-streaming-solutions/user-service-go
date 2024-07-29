@@ -4,7 +4,7 @@
 // - protoc             v5.27.2
 // source: user-service.proto
 
-package protouser
+package userpb
 
 import (
 	context "context"
@@ -20,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	UserService_GetUser_FullMethodName    = "/user.UserService/GetUser"
-	UserService_CreateUser_FullMethodName = "/user.UserService/CreateUser"
+	UserService_GetUser_FullMethodName    = "/userpb.UserService/GetUser"
+	UserService_CreateUser_FullMethodName = "/userpb.UserService/CreateUser"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -132,7 +132,7 @@ func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.UserService",
+	ServiceName: "userpb.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

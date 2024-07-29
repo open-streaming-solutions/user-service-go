@@ -3,7 +3,7 @@ module github.com/Open-Streaming-Solutions/user-service
 go 1.22.5
 
 require (
-	github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-00010101000000-000000000000
+	github.com/Open-Streaming-Solutions/shared v0.1.1
 	github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5
 	github.com/Totus-Floreo/otris v0.1.1
 	github.com/amacneil/dbmate/v2 v2.19.0
@@ -15,8 +15,6 @@ require (
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
 )
-
-replace github.com/Open-Streaming-Solutions/shared/user-service => github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-20240726232231-b7b2469732b3
 
 require (
 	github.com/fatih/color v1.17.0 // indirect

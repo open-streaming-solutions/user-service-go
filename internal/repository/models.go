@@ -10,6 +10,6 @@ import (
 
 type User struct {
 	ID       pgtype.UUID
-	Nickname string
+	Username string
 	Email    string
 }

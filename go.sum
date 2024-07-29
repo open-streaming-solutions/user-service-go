@@ -1,7 +1,10 @@
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
-github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-20240726232231-b7b2469732b3 h1:+QWt1t5aWNXT99cy4L0Cgi6CVKuIvbzPgwFAy86pfCs=
-github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-20240726232231-b7b2469732b3/go.mod h1:b6r42J63eXuAjjdVnT6lDQugUKmvwoipF+g9azSo28A=
+github.com/Open-Streaming-Solutions/shared v0.1.0 h1:/T1MciFoQXizt9n33ogvnyJhUvXR6obcg3bb46YOOvk=
+github.com/Open-Streaming-Solutions/shared v0.1.0/go.mod h1:XTJfWAyDrwscjYrtSYEw0G4E8V5VmGnSLB4dNvVJCs8=
+github.com/Open-Streaming-Solutions/shared v0.1.1/go.mod h1:QQiP27GFOfmI0nx0rt5SCEVRousV/qjs9RFuFr/mk5Q=
+github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-20240729191124-dd007d4392e8 h1:GjpBjFQ41Yf8KMCaJylhOg69jjl89UogbanUTofaxjQ=
+github.com/Open-Streaming-Solutions/shared/user-service v0.0.0-20240729191124-dd007d4392e8/go.mod h1:b6r42J63eXuAjjdVnT6lDQugUKmvwoipF+g9azSo28A=
 github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5 h1:2utncsgypxYV8XffJ1+p2D52owlnRE8RtjRangFuETQ=
 github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5/go.mod h1:sjlfyEVTGb2MK0AGgieg3V8I8ETtLxHVWD0idzgWf5A=
 github.com/Totus-Floreo/otris v0.1.1 h1:qNjzArSs98uboblnXbHwD/jEnPsxJMzeu/seVvxG41g=
