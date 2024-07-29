@@ -2,13 +2,11 @@ package handler
 
 import (
 	"context"
-	xerrors "errors" // I'm so sorry =(
 	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
 	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
 	"github.com/Open-Streaming-Solutions/user-service/internal/service"
 	protouser "github.com/Open-Streaming-Solutions/user-service/pkg/proto"
 	"github.com/Open-Streaming-Solutions/user-service/pkg/util"
-	"github.com/jackc/pgx/v5/pgtype"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -46,14 +44,7 @@ func (h *GrpcHandler) GetUser(ctx context.Context, req *protouser.GetUserRequest
 }
 
 func (h *GrpcHandler) CreateUser(ctx context.Context, req *protouser.CreateUserRequest) (*emptypb.Empty, error) {
-	uuid := &pgtype.UUID{}
-	err := uuid.Scan(req.GetUUID())
-	if err != nil {
-		h.logger.Error("Failed to scan UUID", "error", err)
-		return nil, xerrors.Join(errors.ErrInvalidUUID, err)
-	}
-
-	if err := h.service.CreateUser(ctx, *uuid, req.GetUsername(), req.GetEmail()); err != nil {
+	if err := h.service.CreateUser(ctx, req.GetUUID(), req.GetUsername(), req.GetEmail()); err != nil {
 		h.logger.Error("Failed to create user", "username", req.GetUsername(), "error", err)
 		return nil, errors.ToGrpcError(err)
 	}

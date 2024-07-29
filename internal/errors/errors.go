@@ -14,7 +14,8 @@ const DefaultErrRowScanPrefix = "number of field descriptions must equal number 
 
 var (
 	// Validation Error
-	ErrInvalidUUID = errors.New("invalid UUID: ")
+	ErrInvalidUUID  = errors.New("invalid UUID: ")
+	ErrInvalidEmail = errors.New("invalid email: ")
 
 	// Database Errors
 	ErrUserNotFound              = errors.New("user not found")
@@ -87,6 +88,11 @@ func ToGrpcError(err error) error {
 	case errors.Is(err, ErrInvalidTextRepresentation):
 		return status.Errorf(codes.InvalidArgument, err.Error())
 	case errors.Is(err, ErrSyntaxError):
+		return status.Errorf(codes.InvalidArgument, err.Error())
+	// Validation
+	case errors.Is(err, ErrInvalidUUID):
+		return status.Errorf(codes.InvalidArgument, err.Error())
+	case errors.Is(err, ErrInvalidEmail):
 		return status.Errorf(codes.InvalidArgument, err.Error())
 	default:
 		return status.Errorf(codes.Internal, "unknown error: %v", err)
