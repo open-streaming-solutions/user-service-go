@@ -30,7 +30,11 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-    
+            ${{ runner.os }}-buildx-   
+
+      - name: Get repository name in lowercase
+        id: repo-name
+        run: REPO=$(echo ${{ github.repository }} | tr [:upper:] [:lower:])
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
@@ -38,8 +42,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/my-image:latest
-            ghcr.io/${{ github.repository }}/my-image:${{ github.event.release.tag_name }}
+            ghcr.io/${{ env.REPO }}:latest
+            ghcr.io/${{ env.REPO }}:${{ github.event.release.tag_name }}
 
       - name: Logout from GitHub Container Registry
         run: docker logout ghcr.io
