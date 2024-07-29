@@ -1,15 +1,15 @@
-module github.com/Open-Streaming-Solutions/user-service
+module github.com/open-streaming-solutions/user-service
 
 go 1.22.5
 
 require (
-	github.com/Open-Streaming-Solutions/shared v0.1.1
 	github.com/Totus-Floreo/Atlas-SDK-Go v0.1.5
 	github.com/Totus-Floreo/otris v0.1.1
 	github.com/amacneil/dbmate/v2 v2.19.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
 	github.com/jackc/pgx/v5 v5.6.0
+	github.com/open-streaming-solutions/shared v0.1.2
 	github.com/spf13/viper v1.19.0
 	go.uber.org/fx v1.22.1
 	google.golang.org/grpc v1.65.0
