@@ -5,10 +5,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/Open-Streaming-Solutions/user-service/internal/config"
+	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
 	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
 	"github.com/Open-Streaming-Solutions/user-service/internal/repository"
+	"github.com/Open-Streaming-Solutions/user-service/pkg/util"
 	atlas "github.com/Totus-Floreo/Atlas-SDK-Go"
 	_ "github.com/amacneil/dbmate/v2/pkg/driver/postgres"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/fx"
 	"log/slog"
@@ -20,7 +24,7 @@ var Module = fx.Provide(NewDatabase)
 
 // Database structure
 type Database struct {
-	DB *pgxpool.Pool
+	db *pgxpool.Pool
 }
 
 // NewDatabase Saves a new database instance
@@ -67,7 +71,27 @@ func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) reposit
 		os.Exit(1)
 	}
 
-	return db
+	return Database{db: db}
+}
+
+func (db Database) Exec(ctx context.Context, sql string, args ...interface{}) (pgconn.CommandTag, error) {
+	cmd, err := db.db.Exec(ctx, sql, args...)
+	if err != nil {
+		return pgconn.CommandTag{}, errors.ConvertPgError(err)
+	}
+	return cmd, nil
+}
+
+func (db Database) Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error) {
+	rows, err := db.db.Query(ctx, sql, args...)
+	if err != nil {
+		return rows, errors.ConvertPgError(err)
+	}
+	return rows, nil
+}
+
+func (db Database) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
+	return util.MockRow{Row: db.db.QueryRow(ctx, sql, args...)}
 }
 
 func DoMigration(logger logging.Logger, dbURL, devDbURL *url.URL) error {

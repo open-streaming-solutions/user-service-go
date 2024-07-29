@@ -17,10 +17,10 @@ type IUserService interface {
 
 type UserService struct {
 	logger logging.Logger
-	db     *repository.Queries
+	db     repository.Querier
 }
 
-func NewUserService(logger logging.Logger, db *repository.Queries) IUserService {
+func NewUserService(logger logging.Logger, db repository.Querier) IUserService {
 	return &UserService{
 		logger: logger,
 		db:     db,

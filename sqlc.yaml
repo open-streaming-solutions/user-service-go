@@ -14,3 +14,4 @@ sql:
         package: "repository"
         sql_package: "pgx/v5"
         out: "internal/repository"
+        emit_interface: true
