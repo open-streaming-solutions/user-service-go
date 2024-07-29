@@ -34,7 +34,7 @@ jobs:
 
       - name: Get repository name in lowercase
         id: repo-name
-        run: echo ${{ github.repository }} | tr [:upper:] [:lower:] >> $GITHUB_ENV
+        run: echo "REPO=$(${{ github.repository }} | tr [:upper:] [:lower:])" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
