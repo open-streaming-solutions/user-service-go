@@ -36,8 +36,5 @@ jobs:
       - name: Tidy
         run: go mod tidy
 
-      - name: Generate
-        run: go generate ./...
-
       - name: Build
         run: go build -v ./...
