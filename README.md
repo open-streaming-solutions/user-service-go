@@ -1,6 +1,41 @@
 # user-service
 
-This project utilizes code generation for certain components. If you wish to contribute, you'll need to ensure these code generation dependencies are installed and run properly.
+> **Note:** This project utilizes code generation for certain components.
+> If you wish to contribute, you'll need to ensure these code generation dependencies are installed and run properly. 
+> Don't forget to set these environment variables before running the application.
+
+## Environment Variables
+
+To configure the application, set the following environment variables:
+
+| Variable                    | Description              | Example Value    |
+|-----------------------------|--------------------------|------------------|
+| `USER_SERVICE_DB_USERNAME`  | Database username        | `db_user`        |
+| `USER_SERVICE_DB_PASSWORD`  | Database password        | `db_password`    |
+| `USER_SERVICE_DB_NAME`      | Database name            | `user_service_db`|
+| `USER_SERVICE_DB_HOST`      | Database host            | `localhost`      |
+| `USER_SERVICE_DB_PORT`      | Database port            | `5432`           |
+| `USER_SERVICE_PORT`         | Application port         | `8080`           |
+
+## Local build
+
+**For building docker image:**
+
+```sh
+docker build -t app -f ./deployment/Dockerfile . 
+```
+
+**For simple building app by Go:**
+
+```sh
+go run ./cmd/user-service/main.go
+```
+
+**For simple building app by exec:**
+
+```sh
+exec ./<user-service-binary>
+```
 
 ## Contributors Guide
 
