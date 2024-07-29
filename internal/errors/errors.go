@@ -68,8 +68,6 @@ func ToGrpcError(err error) error {
 	case errors.Is(err, ErrUserNotFound):
 		return status.Errorf(codes.NotFound, err.Error())
 	case errors.Is(err, ErrUserAlreadyExists):
-		return status.Errorf(codes.InvalidArgument, err.Error())
-	case errors.Is(err, ErrUserAlreadyExists):
 		return status.Errorf(codes.AlreadyExists, err.Error())
 	case errors.Is(err, ErrSubscriptionAlreadyExists):
 		return status.Errorf(codes.AlreadyExists, err.Error())
