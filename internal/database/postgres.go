@@ -1,19 +1,17 @@
 package database
 
 import (
-	"bytes"
 	"context"
 	"fmt"
-	"github.com/Open-Streaming-Solutions/user-service/internal/config"
-	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
-	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
-	"github.com/Open-Streaming-Solutions/user-service/internal/repository"
-	"github.com/Open-Streaming-Solutions/user-service/pkg/util"
-	atlas "github.com/Totus-Floreo/Atlas-SDK-Go"
 	_ "github.com/amacneil/dbmate/v2/pkg/driver/postgres"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/open-streaming-solutions/user-service/internal/config"
+	"github.com/open-streaming-solutions/user-service/internal/errors"
+	"github.com/open-streaming-solutions/user-service/internal/logging"
+	"github.com/open-streaming-solutions/user-service/internal/repository"
+	"github.com/open-streaming-solutions/user-service/pkg/util"
 	"go.uber.org/fx"
 	"log/slog"
 	"net/url"
@@ -28,7 +26,7 @@ type Database struct {
 }
 
 // NewDatabase Saves a new database instance
-func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) repository.DBTX {
+func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) (*Database, repository.DBTX) {
 	dbURL, err := GetDatabaseURL(env)
 	if err != nil {
 		logger.Error("Unable to get database URL", slog.String("error", err.Error()))
@@ -38,7 +36,6 @@ func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) reposit
 	devDbURL, err := GetDevDatabaseURL(env)
 	if err != nil {
 		logger.Error("Unable to get dev database URL", slog.String("error", err.Error()))
-		os.Exit(1)
 	}
 
 	parseConfig, err := pgxpool.ParseConfig(dbURL.String())
@@ -48,29 +45,31 @@ func NewDatabase(lx fx.Lifecycle, logger logging.Logger, env config.Env) reposit
 	}
 	parseConfig.ConnConfig.Tracer = logging.NewTraceLog(logger)
 
-	db, err := pgxpool.NewWithConfig(context.Background(), parseConfig)
+	conn, err := pgxpool.NewWithConfig(context.Background(), parseConfig)
 	if err != nil {
 		logger.Error("Unable to create connection pool", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
 
-	if err := DoMigration(logger, dbURL, devDbURL); err != nil {
+	if err := DoMigration(logger, dbURL, devDbURL, GetSchemaURL()); err != nil {
 		logger.Error("Unable to perform database migration", slog.String("error", err.Error()))
 	}
 
 	lx.Append(fx.Hook{
 		OnStop: func(ctx context.Context) error {
-			db.Close()
+			conn.Close()
 			return nil
 		},
 	})
 
-	if err := db.Ping(context.Background()); err != nil {
+	if err := conn.Ping(context.Background()); err != nil {
 		logger.Error("Unable to ping database", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
 
-	return Database{db: db}
+	db := &Database{conn}
+
+	return db, db
 }
 
 func (db Database) Exec(ctx context.Context, sql string, args ...interface{}) (pgconn.CommandTag, error) {
@@ -93,28 +92,13 @@ func (db Database) QueryRow(ctx context.Context, sql string, args ...interface{}
 	return util.MockRow{Row: db.db.QueryRow(ctx, sql, args...)}
 }
 
-func DoMigration(logger logging.Logger, dbURL, devDbURL *url.URL) error {
-	log := logger.With("step", "migrations")
-	log.Info("Starting database migration")
-
-	var buf bytes.Buffer
-	client := atlas.NewClient(&buf)
-	opts := atlas.SchemaApplyOptions{
-		CurrentURL:  dbURL,
-		DesiredURLs: []*url.URL{GetSchemaURL()},
-		DevURL:      devDbURL,
-		Approval:    true,
+func (db Database) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, err := db.db.Begin(ctx)
+	if err != nil {
+		return nil, err
 	}
 
-	log.Info("Applying schema", slog.String("url", GetSchemaURL().String()))
-	if err := client.SchemaApply(opts); err != nil {
-		slog.Error("Unable to apply schema", slog.String("error", err.Error()))
-		return err
-	}
-
-	log.Info("Database migration completed successfully", slog.String("schema", buf.String()))
-
-	return nil
+	return &Tx{tx: tx}, nil
 }
 
 func GetDatabaseURL(env config.Env) (*url.URL, error) {
@@ -129,6 +113,7 @@ func GetDevDatabaseURL(env config.Env) (*url.URL, error) {
 
 var pathToSchema = &url.URL{Scheme: "file", Path: "/sql/schema.sql"}
 
-func GetSchemaURL() *url.URL {
-	return pathToSchema
+// GetSchemaURL Add in v2, get value from ENV
+func GetSchemaURL() []*url.URL {
+	return []*url.URL{pathToSchema}
 }

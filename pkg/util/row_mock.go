@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
 	"github.com/jackc/pgx/v5"
+	"github.com/open-streaming-solutions/user-service/internal/errors"
 )
 
 type MockRow struct {
