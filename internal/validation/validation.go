@@ -2,8 +2,8 @@ package validation
 
 import (
 	xerrors "errors"
-	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/open-streaming-solutions/user-service/internal/errors"
 	"net/mail"
 )
 

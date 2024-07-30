@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/Open-Streaming-Solutions/user-service/internal/config"
-	"github.com/Open-Streaming-Solutions/user-service/internal/database"
-	"github.com/Open-Streaming-Solutions/user-service/internal/handler"
-	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
-	"github.com/Open-Streaming-Solutions/user-service/internal/repository"
-	"github.com/Open-Streaming-Solutions/user-service/internal/server"
-	"github.com/Open-Streaming-Solutions/user-service/internal/service"
+	"github.com/open-streaming-solutions/user-service/internal/config"
+	"github.com/open-streaming-solutions/user-service/internal/database"
+	"github.com/open-streaming-solutions/user-service/internal/handler"
+	"github.com/open-streaming-solutions/user-service/internal/logging"
+	"github.com/open-streaming-solutions/user-service/internal/repository"
+	"github.com/open-streaming-solutions/user-service/internal/server"
+	"github.com/open-streaming-solutions/user-service/internal/service"
 	"go.uber.org/fx"
 )
 

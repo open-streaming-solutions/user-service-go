@@ -2,11 +2,11 @@ package handler
 
 import (
 	"context"
-	"github.com/Open-Streaming-Solutions/user-service/internal/errors"
-	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
-	"github.com/Open-Streaming-Solutions/user-service/internal/service"
-	protouser "github.com/Open-Streaming-Solutions/user-service/pkg/proto"
-	"github.com/Open-Streaming-Solutions/user-service/pkg/util"
+	"github.com/open-streaming-solutions/user-service/internal/errors"
+	"github.com/open-streaming-solutions/user-service/internal/logging"
+	"github.com/open-streaming-solutions/user-service/internal/service"
+	protouser "github.com/open-streaming-solutions/user-service/pkg/proto"
+	"github.com/open-streaming-solutions/user-service/pkg/util"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"

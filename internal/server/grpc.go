@@ -2,12 +2,12 @@ package server
 
 import (
 	"context"
-	"github.com/Open-Streaming-Solutions/user-service/internal/config"
-	"github.com/Open-Streaming-Solutions/user-service/internal/handler"
-	"github.com/Open-Streaming-Solutions/user-service/internal/logging"
-	"github.com/Open-Streaming-Solutions/user-service/internal/middleware"
 	mdlogging "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
+	"github.com/open-streaming-solutions/user-service/internal/config"
+	"github.com/open-streaming-solutions/user-service/internal/handler"
+	"github.com/open-streaming-solutions/user-service/internal/logging"
+	"github.com/open-streaming-solutions/user-service/internal/middleware"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"log/slog"

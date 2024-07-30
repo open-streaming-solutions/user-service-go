@@ -10,13 +10,11 @@ RUN go mod download && go mod verify
 COPY ../. .
 
 RUN apk add --no-cache \
-    git \
     curl \
     protobuf \
     protobuf-dev \
     && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
-    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.4.0
-# Change to latest version when google fix its bullshit and remove git
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 # Download Atlas binary
 RUN curl -sSfL https://release.ariga.io/atlas/atlas-community-linux-amd64-latest -o /usr/local/bin/atlas \
